@@ -1,6 +1,6 @@
 const inquirer = require('inquirer');
 
-let charStats = {
+const orgCharStats = {
     atk: 0,
     def: 0,
     speed: 0,
@@ -9,20 +9,24 @@ let charStats = {
     class: "",
     gold: 5,
     hp: 20, 
-}
+};
+
+let charStats = {};
 
 // class enemy {
 //     constructor(atk, def, hp,)
 // }
 
-// class Armor {
-//     // Just like constructor functions, classes can accept arguments
-//     constructor(speed, def) {
-//       this.speed = speed;
-//       this.def = def;
-//     }
+class Armor {
+    constructor(speed, def, cost) {
+      this.speedPen = speed;
+      this.def = def;
+      this.cost = cost;
+    }};
 
-
+const heavyArmor = new Armor(3,3,10);
+const medArmor = new Armor(2,2,5);
+const lightArmor = new Armor(1,1,2); 
 
 
 const classBonus = (response) => {switch (response) {
@@ -115,7 +119,27 @@ const humanBonus = () => {inquirer.prompt([
     }])
   .then((response) => {
     charStats.name = response.name
-    console.log(charStats)
+    // console.log(charStats)
+    startAdventure()
+  })};
+
+  const startAdventure = () => {inquirer.prompt([
+    {
+      type: 'list',
+      message: `Start Adventure?`,
+      name: 'start',
+      choices: [`I'm ready for an adventure!`, `No, not yet. (Build a different character)`]
+    }])
+  .then((response) => {switch (response.start) {
+    case "I'm ready for an adventure!":
+         
+         break;
+    case `No, not yet. (Build a different character)`:
+      charStats = {};
+      console.log(charStats);
+      init();
+        
+  }  
   })};
 
 
@@ -127,6 +151,7 @@ const humanBonus = () => {inquirer.prompt([
       choices: ['Fighter Atk:2 Def:0 Speed:0 Magic:0', 'Paladin Atk:0 Def:2 Speed:0 Magic:0', 'Rouge Atk:0 Def:0 Speed:2 Magic:0', 'Wizard Atk:0 Def:0 Speed:0 Magic:2' ]
     }])
   .then((response) => {
+    charStats = orgCharStats;
     classBonus(response.class);
     raceBonus();
   });
@@ -134,3 +159,4 @@ const humanBonus = () => {inquirer.prompt([
   };
 
   init()
+ 
